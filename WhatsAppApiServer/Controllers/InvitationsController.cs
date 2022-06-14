@@ -13,11 +13,14 @@ namespace WhatsAppApiServer.Controllers
         private readonly IContactsService _contactsService;
         private readonly HubService _hubService;
         private readonly IHubContext<MyHub> _myHub;
-        public InvitationsController(ContactsService contactsService, IHubContext<MyHub> myHub, HubService hubService)
+        private readonly FirebaseService _firebaseService;
+        public InvitationsController(ContactsService contactsService, IHubContext<MyHub> myHub,
+            HubService hubService, FirebaseService firebaseService)
         {
             _contactsService = contactsService;
             _myHub = myHub;
             _hubService = hubService;
+            _firebaseService = firebaseService;
         }
 
         // POST: Invitations
@@ -42,6 +45,11 @@ namespace WhatsAppApiServer.Controllers
             if (connectionID != null)
             {
                 await _myHub.Clients.Client(connectionID).SendAsync("ContactChangeRecieved", contact);
+            }
+            connectionID = _firebaseService.GetToken(invitation.To);
+            if (!string.IsNullOrEmpty(connectionID) && contact != null)
+            {
+                _firebaseService.SendInvatation(contact);
             }
             return Created(nameof(PostInvitations), null);
         }

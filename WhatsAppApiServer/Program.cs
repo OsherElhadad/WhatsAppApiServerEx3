@@ -18,6 +18,7 @@ builder.Services.AddScoped<UsersService>();
 builder.Services.AddScoped<ContactsService>();
 builder.Services.AddScoped<MessagesService>();
 builder.Services.AddScoped<HubService>();
+builder.Services.AddScoped<FirebaseService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

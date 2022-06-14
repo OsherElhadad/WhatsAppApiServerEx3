@@ -14,12 +14,15 @@ namespace WhatsAppApiServer.Controllers
         private readonly IMessagesService _messagesService;
         private readonly IContactsService _contactsService;
         private readonly IHubContext<MyHub> _myHub;
-        public TransferController(MessagesService messagesService, ContactsService contactsService, IHubContext<MyHub> myHub, HubService hubService)
+        private readonly FirebaseService _firebaseService;
+        public TransferController(MessagesService messagesService, ContactsService contactsService,
+            IHubContext<MyHub> myHub, HubService hubService, FirebaseService firebaseService)
         {
             _messagesService = messagesService;
             _myHub = myHub;
             _contactsService = contactsService;
             _hubService = hubService;
+            _firebaseService = firebaseService;
         }
 
         // POST: Transfer
@@ -40,9 +43,14 @@ namespace WhatsAppApiServer.Controllers
 
             string? connectionID = _hubService.GetConnectionId(transfer.To);
 
-            if (connectionID != null)
+            if (!string.IsNullOrEmpty(connectionID))
             {
                 await _myHub.Clients.Client(connectionID).SendAsync("MessageChangeRecieved", contact, message);
+            }
+            connectionID = _firebaseService.GetToken(transfer.To);
+            if (!string.IsNullOrEmpty(connectionID) && contact != null)
+            {
+                _firebaseService.SendTransfer(contact, message);
             }
             return Created(nameof(PostTransfer), null);
         }
