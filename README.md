@@ -68,6 +68,10 @@ All you need to do now is to wait for the swagger to open on you browser, and th
 
 * Has Post http://localhost:5146/api/LogIn - log in (user) by getting json of UserId and Password in the body of the request and returns (200) the token of the JWT if created successfully or failed (400) else.
 
+## ConnectToFirebase Controller
+
+* Post http://localhost:5146/api/ConnectToFirebase - Mangae a mapping between users to their firebase token and send notifiactions accordingly when the relavent user 	got a transfer or invitation.
+
 ## Services
 
 * Has IUsersService, IContactsService, IMessagesService interfaces of UsersService, ContactsService, MessagesService that has field of WhatsAppApiContext that contains the 3 DB tables (entity framework) that does the controller methods that uses the DB context.
