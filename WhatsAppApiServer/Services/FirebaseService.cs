@@ -34,9 +34,10 @@ namespace WhatsAppApiServer.Services
             var message = new FirebaseAdmin.Messaging.Message()
             {
                 Data = new Dictionary<string, string>() {
+                    { "type", "Contact" },
                     { "Contact", contact.Id },
                 },
-                Token = GetToken(contact.Id),
+                Token = GetToken(contact.UserId),
                 Notification = new FirebaseAdmin.Messaging.Notification()
                 {
                     Title = "New contact",
@@ -56,15 +57,16 @@ namespace WhatsAppApiServer.Services
             var msg = new FirebaseAdmin.Messaging.Message()
             {
                 Data = new Dictionary<string, string>() {
+                    { "type", "Message" },
                     { "Contact", contact.Id },
                     { "Message", message.Content },
                     { "From", message.UserId }
                 },
-                Token = GetToken(contact.Id),
+                Token = GetToken(contact.UserId),
                 Notification = new FirebaseAdmin.Messaging.Notification()
                 {
-                    Title = "New message from " + message.UserId + " to " + contact.Id,
-                    Body = "contact: " + message.UserId + " sent to user: " + contact.Id +
+                    Title = "New message from " + contact.Id + " to " + message.UserId,
+                    Body = "contact: " + contact.Id + " sent to user: " + message.UserId +
                             " new message: " + message.Content,
                 }
             };

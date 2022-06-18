@@ -26,6 +26,11 @@ namespace WhatsAppApiServer.Controllers
             {
                 return NotFound();
             }
+            if (_firebaseService.GetToken(userFBToken.username) != null &&
+                _firebaseService.GetToken(userFBToken.username) != "")
+            {
+                return Ok();
+            }
             _firebaseService.AddUserToken(userFBToken.username, userFBToken.token);
             return Ok();
         }
