@@ -49,7 +49,13 @@ namespace WhatsAppApiServer.Controllers
             connectionID = _firebaseService.GetToken(invitation.To);
             if (!string.IsNullOrEmpty(connectionID) && contact != null)
             {
-                _firebaseService.SendInvatation(contact);
+                try
+                {
+                    _firebaseService.SendInvatation(contact);
+                } catch(Exception e)
+                {
+
+                }
             }
             return Created(nameof(PostInvitations), null);
         }

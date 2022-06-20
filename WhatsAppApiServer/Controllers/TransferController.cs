@@ -50,7 +50,14 @@ namespace WhatsAppApiServer.Controllers
             connectionID = _firebaseService.GetToken(transfer.To);
             if (!string.IsNullOrEmpty(connectionID) && contact != null)
             {
-                _firebaseService.SendTransfer(contact, message);
+                try
+                {
+                    _firebaseService.SendTransfer(contact, message);
+                }
+                catch (Exception e)
+                {
+
+                }
             }
             return Created(nameof(PostTransfer), null);
         }

@@ -26,51 +26,63 @@ namespace WhatsAppApiServer.Services
 
         public void SendInvatation(Contact contact)
         {
-            FirebaseApp.Create(new AppOptions()
+            try
             {
-                Credential = GoogleCredential.FromFile("private_key.json")
-            });
+                FirebaseApp.Create(new AppOptions()
+                {
+                    Credential = GoogleCredential.FromFile("private_key.json")
+                });
 
-            var message = new FirebaseAdmin.Messaging.Message()
-            {
-                Data = new Dictionary<string, string>() {
+                var message = new FirebaseAdmin.Messaging.Message()
+                {
+                    Data = new Dictionary<string, string>() {
                     { "type", "Contact" },
                     { "Contact", contact.Id },
                 },
-                Token = GetToken(contact.UserId),
-                Notification = new FirebaseAdmin.Messaging.Notification()
-                {
-                    Title = "New contact",
-                    Body = "User: " + contact.Id + " has new contact!"
-                }
-            };
-            FirebaseMessaging.DefaultInstance.SendAsync(message);
+                    Token = GetToken(contact.UserId),
+                    Notification = new FirebaseAdmin.Messaging.Notification()
+                    {
+                        Title = "New contact",
+                        Body = "User: " + contact.Id + " has new contact!"
+                    }
+                };
+                FirebaseMessaging.DefaultInstance.SendAsync(message);
+            } catch(Exception e)
+            {
+
+            }
         }
 
         public void SendTransfer(Contact contact, Message message)
         {
-            FirebaseApp.Create(new AppOptions()
+            try
             {
-                Credential = GoogleCredential.FromFile("private_key.json")
-            });
+                FirebaseApp.Create(new AppOptions()
+                {
+                    Credential = GoogleCredential.FromFile("private_key.json")
+                });
 
-            var msg = new FirebaseAdmin.Messaging.Message()
-            {
-                Data = new Dictionary<string, string>() {
+                var msg = new FirebaseAdmin.Messaging.Message()
+                {
+                    Data = new Dictionary<string, string>() {
                     { "type", "Message" },
                     { "Contact", contact.Id },
                     { "Message", message.Content },
                     { "From", message.UserId }
                 },
-                Token = GetToken(contact.UserId),
-                Notification = new FirebaseAdmin.Messaging.Notification()
-                {
-                    Title = "New message from " + contact.Id + " to " + message.UserId,
-                    Body = "contact: " + contact.Id + " sent to user: " + message.UserId +
-                            " new message: " + message.Content,
-                }
-            };
-            FirebaseMessaging.DefaultInstance.SendAsync(msg);
+                    Token = GetToken(contact.UserId),
+                    Notification = new FirebaseAdmin.Messaging.Notification()
+                    {
+                        Title = "New message from " + contact.Id + " to " + message.UserId,
+                        Body = "contact: " + contact.Id + " sent to user: " + message.UserId +
+                                " new message: " + message.Content,
+                    }
+                };
+                FirebaseMessaging.DefaultInstance.SendAsync(msg);
+            } catch(Exception e)
+            {
+
+            }
         }
     }
 }
