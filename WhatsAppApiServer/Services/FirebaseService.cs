@@ -28,10 +28,13 @@ namespace WhatsAppApiServer.Services
         {
             try
             {
-                FirebaseApp.Create(new AppOptions()
+                if (FirebaseApp.DefaultInstance == null)
                 {
-                    Credential = GoogleCredential.FromFile("private_key.json")
-                });
+                    FirebaseApp.Create(new AppOptions()
+                    {
+                        Credential = GoogleCredential.FromFile("private_key.json")
+                    });
+                }
 
                 var message = new FirebaseAdmin.Messaging.Message()
                 {
@@ -58,10 +61,13 @@ namespace WhatsAppApiServer.Services
         {
             try
             {
-                FirebaseApp.Create(new AppOptions()
+                if (FirebaseApp.DefaultInstance == null)
                 {
-                    Credential = GoogleCredential.FromFile("private_key.json")
-                });
+                    FirebaseApp.Create(new AppOptions()
+                    {
+                        Credential = GoogleCredential.FromFile("private_key.json")
+                    });
+                }
 
                 var msg = new FirebaseAdmin.Messaging.Message()
                 {
