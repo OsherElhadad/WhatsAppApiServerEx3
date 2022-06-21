@@ -38,6 +38,7 @@ namespace WhatsAppApiServer.Services
                     Data = new Dictionary<string, string>() {
                     { "type", "Contact" },
                     { "Contact", contact.Id },
+                    { "User", contact.UserId },
                 },
                     Token = GetToken(contact.UserId),
                     Notification = new FirebaseAdmin.Messaging.Notification()
@@ -68,7 +69,7 @@ namespace WhatsAppApiServer.Services
                     { "type", "Message" },
                     { "Contact", contact.Id },
                     { "Message", message.Content },
-                    { "From", message.UserId }
+                    { "User", message.UserId }
                 },
                     Token = GetToken(contact.UserId),
                     Notification = new FirebaseAdmin.Messaging.Notification()
